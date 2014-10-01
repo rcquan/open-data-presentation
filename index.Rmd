@@ -102,24 +102,104 @@ One person can instigate change at the community level and resolve unintended po
 ---
 ## Top 10 Complaints
 
+```{r, echo=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
 
+# read in data pulled from NYC 311 data, 1/1/2014 - 7/15/2014
+dat <- read.csv("data/311_Service_Requests_from_2010_to_Present.csv",
+                stringsAsFactors = FALSE)
 
-<img src="assets/fig/unnamed-chunk-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" style="display: block; margin: auto;" />
+dat$Complaint.Type[which(dat$Complaint.Type == "PAINT - PLASTER")] <- "paint/plaster"
+dat <- filter(dat, Incident.Zip != 10026)
+```
+
+```{r, echo=FALSE, fig.align='center'}
+# Top 10 Complaints
+dat_complaint <- dat %>%
+        mutate(complaint = factor(tolower(Complaint.Type))) %>%
+        group_by(complaint) %>%
+        summarise(count = length(complaint)) %>%
+        arrange(desc(count)) %>%
+        filter(count >= 470) %>%
+        mutate(complaint = reorder(complaint, count))
+             
+ggplot(dat_complaint, aes(x = complaint, y = count)) + 
+    # initialize bar plot
+    geom_bar(stat = "identity", fill = "#0072B2") + 
+    # labels and axes
+    coord_flip() + 
+    xlab("Complaint Type") + 
+    ylab("No. of Complaints (1/1/14-7/15/14)") + 
+    ggtitle("Top 10 Complaints in District 7")
+```
 
 ---
 ## Top Agency Complaints
 
-<img src="assets/fig/unnamed-chunk-3.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
+```{r, echo=FALSE, fig.align='center'}
+# Top Complaints by Agency
+dat_agency <- dat %>%
+        mutate(agency.name = factor(Agency.Name)) %>%
+        group_by(agency.name) %>%
+        summarise(count = length(agency.name)) %>%
+        arrange(desc(count)) %>%
+        filter(count > 10) %>%
+        mutate(agency.name = reorder(agency.name, count))
+
+ggplot(dat_agency, aes(x = agency.name, y = count)) + 
+    # initialize bar plot
+    geom_bar(stat = "identity", fill = "#0072B2") +
+    # labels and axes
+    coord_flip() + 
+    ylab("No. of Complaints (1/1/14-7/15/14)") + 
+    xlab("Agency in Charge") +
+    ggtitle("Top 311 Complaints by Agency in District 7")
+```
 
 ---
 ## Top Non-HPD Complaints
 
-<img src="assets/fig/unnamed-chunk-4.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+```{r, echo=FALSE, fig.align='center'}
+# Top Non-HPD Complaints
+dat_noHPD <- dat %>%
+        filter(Agency != "HPD") %>%
+        mutate(complaint = factor(tolower(Complaint.Type))) %>%
+        group_by(complaint) %>%
+        summarise(count = length(complaint)) %>%
+        arrange(desc(count)) %>%
+        filter(count >= 67) %>%
+        mutate(complaint = reorder(complaint, count))
+
+ggplot(dat_noHPD, aes(x = complaint, y = count)) + 
+    geom_bar(stat = "identity", fill = "#0072B2") +
+    coord_flip() + 
+    xlab("Complaint Type") + 
+    ylab("No. of Complaints (1/1/14-7/15/14)") +
+    ggtitle("Top Non-HPD 311 Complaints in District 7")
+```
 
 ---
 ## Top Noise Complaints
 
-<img src="assets/fig/unnamed-chunk-5.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+```{r, echo=FALSE, fig.align='center'}
+# Top Noise Complaints
+dat_noise <- dat %>%
+        filter(Complaint.Type == "Noise") %>%
+        mutate(description = factor(Descriptor)) %>%
+        group_by(description) %>%
+        summarise(count = length(description)) %>%
+        arrange(desc(count)) %>%
+        mutate(description = reorder(description, count))
+
+ggplot(dat_noise, aes(x = description, y = count)) + 
+    geom_bar(stat = "identity", fill = "#0072B2") +
+    coord_flip() + 
+    xlab("Noise Type") + 
+    ylab("No. of Complaints (1/1/14-7/15/14)") +
+    ggtitle("Top Noise Complaints in District 7")
+```
 
 ---
 ## 311 Rat Complaints
@@ -206,8 +286,8 @@ Here we identified a building on 151st between Amsterdam and Broadway with sever
 ## Reproducibility
 
 - 311 Data Report for District 7 | [Rpubs](http://rpubs.com/rcquan/22480)
-- R Code - [GitHub](www.github.com/rcquan)
-- HTML5 Slides - [GitHub](www.github.com/rcquan)
+- R Code | [GitHub](www.github.com/rcquan/open-data-presentation)
+- HTML5 Slides | [GitHub](www.github.com/rcquan/open-data-presentation)
 
 ---
 ## Thanks!
