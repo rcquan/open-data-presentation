@@ -47,7 +47,7 @@ The story of how a visiting faculty member at the Pratt School of Architecture w
 
 - Ben Wellington, [IQuantNY](http://iquantny.tumblr.com/)
 
-- [Reddit, Tumblr, and Local Media Outlets]((http://iquantny.tumblr.com/post/87573867759/success-how-nyc-open-data-and-reddit-saved-new-yorkers))
+- [Reddit, Tumblr, and Local Media Outlets](http://iquantny.tumblr.com/post/87573867759/success-how-nyc-open-data-and-reddit-saved-new-yorkers)
 
 <div style='text-align: center;'>
     <img src="img/hydrant.jpg" alt="hydrant">
@@ -286,8 +286,8 @@ Here we identified a building on 151st between Amsterdam and Broadway with sever
 ## Reproducibility
 
 - 311 Data Report for District 7 | [Rpubs](http://rpubs.com/rcquan/22480)
-- R Code | [GitHub](www.github.com/rcquan/open-data-presentation)
-- HTML5 Slides | [GitHub](www.github.com/rcquan/open-data-presentation)
+- R Code | [GitHub](https://github.com/rcquan/open-data-presentation)
+- HTML5 Slides | [GitHub](https://github.com/rcquan/open-data-presentation)
 
 ---
 ## Thanks!
